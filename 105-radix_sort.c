@@ -1,73 +1,35 @@
 #include "sort.h"
-
 /**
-* findmax - Finds the maximum value in an array
-* @array: array to find max value of
-* @size: Size of array
-* Return: Largest value
-*/
-
-int findmax(int *array, size_t size)
-{
-	int i, max = 0;
-
-	for (i = 0; i < (int)size; i++)
-	{
-		if (max < array[i])
-			max = array[i];
-	}
-	return (max);
-}
-
-/**
-* radix_sort - Sorts an array using radix sort algo
-* @array: Array to sort
-* @size: size of array
-*/
-
+ * radix_sort - sorts an array of integers in ascending
+ * order
+ *
+ * @array: input array
+ * @size: size of the array
+ */
 void radix_sort(int *array, size_t size)
 {
-	int m, pos, *out, *ca;
+	int flag = 1, n = 10;
+	size_t i, f;
 
-	if (array == NULL || size < 2)
+	if (!array || size == 1)
 		return;
-	m = findmax(array, size);
-	out = malloc(sizeof(int) * (int)size);
-	ca = malloc(sizeof(int) * (10));
-	if (ca == NULL || out == NULL)
-		return;
-	for (pos = 1; m / pos > 0; pos *= 10)
-		counting_sort_r(array, size, pos, out, ca), print_array(array, size);
-	free(out);
-	free(ca);
-}
-
-/**
-* counting_sort_r - sorts array using counting algorithm
-* @array: Array to sort
-* @size: Size of array
-* @pos: Digit position value
-* @out: Temp output array
-* @ca: Count array
-*/
-
-void counting_sort_r(int *array, size_t size, int pos, int *out, int *ca)
-{
-	int i;
-
-	if (array == NULL || size < 2)
-		return;
-	for (i = 0; i < 10; i++)
-		ca[i] = 0;
-	for (i = 0; i < (int)size; i++)
-		ca[((array[i] / pos) % 10)] += 1;
-	for (i = 0; i < 10; i++)
-		ca[i] += ca[i - 1];
-	for (i = size - 1; i >= 0; i--)
+	while (flag)
 	{
-		out[ca[((array[i] / pos) % 10)] - 1] = array[i];
-		ca[((array[i] / pos) % 10)] -= 1;
+		flag = 0;
+		for (i = 1, f = 1; i <  size; i++, f++)
+		{
+			if ((array[i - 1] % (n * 10)) / ((n * 10) / 10) > 0)
+				flag = 1;
+			if (((array[i - 1] % n) / (n / 10)) > ((array[i] % n) / (n / 10)))
+			{
+				array[i - 1] = array[i - 1] + array[i];
+				array[i] = array[i - 1] - array[i];
+				array[i - 1] = array[i - 1] - array[i];
+				if ((i - 1) > 0)
+					i = i - 2;
+			}
+		}
+		print_array(array, size);
+		n = n * 10;
 	}
-	for (i = 0; i < (int)size; i++)
-		array[i] = out[i];
 }
