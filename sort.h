@@ -21,6 +21,7 @@ typedef struct listint_s
 /* Prototypes for mandatory tasks */
 void bubble_sort(int *array, size_t size);
 void insertion_sort_list(listint_t **list);
+void swapem(listint_t *l, listint_t *r, listint_t **h);
 void quick_sort(int *array, size_t size);
 void selection_sort(int *array, size_t size);
 size_t partition(int array[], size_t size);
