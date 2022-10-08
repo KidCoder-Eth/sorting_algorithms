@@ -35,6 +35,7 @@ void selection_sort(int *array, size_t size);
 
 /** 3 */
 void quick_sort(int *array, size_t size);
+size_t partition(int array[], size_t size);
 int partition(int *a, int l, int h);
 void qs(int *a, int l, int h);
 
